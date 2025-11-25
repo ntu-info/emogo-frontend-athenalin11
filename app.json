@@ -2,24 +2,58 @@
   "expo": {
     "scheme": "acme",
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "允許 Emogo 使用相機來記錄影片。",
+          "microphonePermission": "允許 Emogo 使用麥克風來記錄音訊。"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "允許 Emogo 取得您的位置資訊。"
+        }
+      ]
     ],
-    "name": "expo-router-mwe",
-    "slug": "expo-router-mwe",
+    "name": "Emogo",
+    "slug": "emogo-frontend-athenalin11",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "android": {
-      "package": "com.spiketren.exporoutermwe"
+      "package": "com.athena11.emogo",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "CAMERA",
+        "RECORD_AUDIO",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "RECEIVE_BOOT_COMPLETED",
+        "SCHEDULE_EXACT_ALARM"
+      ]
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "7918e76f-59e9-45c4-aae4-c99cec64cfac"
-      }
+      "router": {}
     },
-    "owner": "spiketren",
+    "owner": "athena_11",
     "ios": {
-      "bundleIdentifier": "com.spiketren.exporoutermwe",
+      "bundleIdentifier": "com.athena11.emogo",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "允許 Emogo 使用相機來記錄影片。",
+        "NSMicrophoneUsageDescription": "允許 Emogo 使用麥克風來記錄音訊。",
+        "NSLocationWhenInUseUsageDescription": "允許 Emogo 取得您的位置資訊。"
       }
     }
   }

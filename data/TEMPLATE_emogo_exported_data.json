@@ -1,0 +1,92 @@
+{
+  "sentiment_records": [
+    {
+      "id": 1,
+      "timestamp": "2025-11-24 03:04:27",
+      "valence": 2,
+      "arousal": 2,
+      "dominance": 2,
+      "notes": "寫分析導論作業很累數學證明很煩三角函數我都忘光了"
+    },
+    {
+      "id": 2,
+      "timestamp": "2025-11-25 13:19:04",
+      "valence": 5,
+      "arousal": 3,
+      "dominance": 3,
+      "notes": "感冒了醒不來"
+    },
+    {
+      "id": 3,
+      "timestamp": "2025-11-25 20:30:22",
+      "valence": 9,
+      "arousal": 8,
+      "dominance": 5,
+      "notes": "在看電視劇，迪麗熱巴的梟起青壤很好看"
+    },
+    {
+      "id": 4,
+      "timestamp": "2025-11-26 02:26:28",
+      "valence": 3,
+      "arousal": 1,
+      "dominance": 1,
+      "notes": "好想睡覺突然想起還要作業的紀錄"
+    }
+  ],
+  "vlog_records": [
+    {
+      "id": 1,
+      "timestamp": "2025-11-24 03:04:32",
+      "video_path": "file:///data/user/0/com.athena11.emogo/cache/Camera/video_1732383872000.mp4",
+      "duration": 1
+    },
+    {
+      "id": 2,
+      "timestamp": "2025-11-25 13:19:09",
+      "video_path": "file:///data/user/0/com.athena11.emogo/cache/Camera/video_1732507149000.mp4",
+      "duration": 1
+    },
+    {
+      "id": 3,
+      "timestamp": "2025-11-25 20:30:27",
+      "video_path": "file:///data/user/0/com.athena11.emogo/cache/Camera/video_1732532427000.mp4",
+      "duration": 1
+    },
+    {
+      "id": 4,
+      "timestamp": "2025-11-26 02:26:33",
+      "video_path": "file:///data/user/0/com.athena11.emogo/cache/Camera/video_1732553193000.mp4",
+      "duration": 1
+    }
+  ],
+  "gps_records": [
+    {
+      "id": 1,
+      "timestamp": "2025-11-24 03:04:37",
+      "latitude": 25.0142,
+      "longitude": 121.4679,
+      "accuracy": 16.2
+    },
+    {
+      "id": 2,
+      "timestamp": "2025-11-25 13:19:14",
+      "latitude": 25.0143,
+      "longitude": 121.4678,
+      "accuracy": 14.5
+    },
+    {
+      "id": 3,
+      "timestamp": "2025-11-25 20:30:32",
+      "latitude": 25.0141,
+      "longitude": 121.4680,
+      "accuracy": 18.3
+    },
+    {
+      "id": 4,
+      "timestamp": "2025-11-26 02:26:38",
+      "latitude": 25.0142,
+      "longitude": 121.4679,
+      "accuracy": 15.7
+    }
+  ]
+}
