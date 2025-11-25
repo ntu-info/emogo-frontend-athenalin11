@@ -40,24 +40,56 @@ export default function RecordScreen() {
 
   useEffect(() => {
     requestLocationPermission();
-    getCurrentLocation();
   }, []);
 
   const requestLocationPermission = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    setLocationPermission(status === 'granted');
+    try {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      setLocationPermission(status === 'granted');
+      
+      if (status === 'granted') {
+        // 權限授予後立即取得位置
+        await getCurrentLocation();
+      } else {
+        Alert.alert('需要權限', '請允許 APP 存取您的位置資訊');
+      }
+    } catch (error) {
+      console.error('❌ Error requesting location permission:', error);
+    }
   };
 
   const getCurrentLocation = async () => {
     try {
+      console.log('🔍 正在取得位置...');
       const loc = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
+        timeInterval: 5000,
+        distanceInterval: 0,
       });
       setLocation(loc);
-      console.log('✅ Location obtained:', loc.coords);
+      console.log('✅ Location obtained:', {
+        lat: loc.coords.latitude,
+        lng: loc.coords.longitude,
+        accuracy: loc.coords.accuracy
+      });
     } catch (error) {
       console.error('❌ Error getting location:', error);
-      Alert.alert('錯誤', '無法取得位置資訊');
+      
+      // 如果高精度失敗，嘗試使用較低精度
+      try {
+        console.log('🔍 嘗試使用平衡模式取得位置...');
+        const loc = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Balanced,
+        });
+        setLocation(loc);
+        console.log('✅ Location obtained (balanced):', {
+          lat: loc.coords.latitude,
+          lng: loc.coords.longitude
+        });
+      } catch (error2) {
+        console.error('❌ Error getting location (balanced):', error2);
+        Alert.alert('錯誤', '無法取得位置資訊\n請確認已開啟 GPS 定位功能');
+      }
     }
   };
 
@@ -66,22 +98,37 @@ export default function RecordScreen() {
     
     setIsRecording(true);
     try {
-      const video = await cameraRef.recordAsync();
-      
-      // 1 秒後停止錄影
-      setTimeout(() => {
-        if (cameraRef) {
-          cameraRef.stopRecording();
-        }
-      }, 1000);
+      console.log('🎥 開始錄影...');
+      const video = await cameraRef.recordAsync({
+        maxDuration: 1, // 最多錄 1 秒
+        quality: '720p',
+      });
       
       setRecordedVideo(video.uri);
       setIsRecording(false);
       console.log('✅ Video recorded:', video.uri);
+      
+      // 錄影完成後自動進入下一步
+      setTimeout(() => setStep(3), 500);
     } catch (error) {
       console.error('❌ Error recording video:', error);
       setIsRecording(false);
-      Alert.alert('錯誤', '錄影失敗');
+      
+      // 如果錄影失敗，詢問是否跳過
+      Alert.alert(
+        '錄影失敗',
+        '無法錄製影片。是否跳過此步驟？',
+        [
+          { text: '重試', style: 'cancel' },
+          { 
+            text: '跳過', 
+            onPress: () => {
+              setRecordedVideo('mock://skipped.mp4');
+              setStep(3);
+            }
+          }
+        ]
+      );
     }
   };
 
@@ -209,7 +256,17 @@ export default function RecordScreen() {
             />
           </View>
 
-          <TouchableOpacity style={styles.nextButton} onPress={() => setStep(2)}>
+          <TouchableOpacity 
+            style={styles.nextButton} 
+            onPress={async () => {
+              // 進入錄影步驟前，重新確認位置
+              if (!location) {
+                Alert.alert('提示', '正在取得位置資訊...');
+                await getCurrentLocation();
+              }
+              setStep(2);
+            }}
+          >
             <Text style={styles.nextButtonText}>下一步：錄製影片 →</Text>
           </TouchableOpacity>
         </View>
@@ -336,22 +393,36 @@ export default function RecordScreen() {
           {location ? (
             <>
               <Text style={styles.summaryText}>
-                緯度: {location.coords.latitude.toFixed(6)}
+                ✅ 緯度: {location.coords.latitude.toFixed(6)}
               </Text>
               <Text style={styles.summaryText}>
-                經度: {location.coords.longitude.toFixed(6)}
+                ✅ 經度: {location.coords.longitude.toFixed(6)}
               </Text>
               <Text style={styles.summaryText}>
                 精確度: ±{location.coords.accuracy?.toFixed(1)}m
               </Text>
             </>
           ) : (
-            <Text style={styles.summaryText}>❌ 無法取得位置</Text>
+            <>
+              <Text style={styles.summaryText}>❌ 無法取得位置</Text>
+              <TouchableOpacity 
+                style={styles.retryLocationButton}
+                onPress={getCurrentLocation}
+              >
+                <Text style={styles.retryLocationButtonText}>🔄 重新取得位置</Text>
+              </TouchableOpacity>
+            </>
           )}
         </View>
 
-        <TouchableOpacity style={styles.saveButton} onPress={saveAllData}>
-          <Text style={styles.saveButtonText}>💾 儲存所有資料</Text>
+        <TouchableOpacity 
+          style={[styles.saveButton, !location && styles.saveButtonDisabled]} 
+          onPress={saveAllData}
+          disabled={!location}
+        >
+          <Text style={styles.saveButtonText}>
+            {location ? '💾 儲存所有資料' : '⏳ 請先取得位置...'}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
@@ -545,9 +616,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
   },
+  saveButtonDisabled: {
+    backgroundColor: "#CCCCCC",
+  },
   saveButtonText: {
     color: "white",
     fontSize: 18,
+    fontWeight: "600",
+  },
+  retryLocationButton: {
+    backgroundColor: "#2196F3",
+    borderRadius: 8,
+    padding: 12,
+    alignItems: "center",
+    marginTop: 12,
+  },
+  retryLocationButtonText: {
+    color: "white",
+    fontSize: 14,
     fontWeight: "600",
   },
   cancelButton: {
