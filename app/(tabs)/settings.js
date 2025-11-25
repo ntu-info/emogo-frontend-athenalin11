@@ -36,11 +36,17 @@ export default function SettingsScreen() {
   };
 
   const handleExportAll = async () => {
-    const success = await exportAllData();
-    if (success) {
-      Alert.alert('成功', '資料已匯出並分享');
-    } else {
-      Alert.alert('失敗', '資料匯出失敗');
+    try {
+      console.log('🔄 開始匯出流程...');
+      const success = await exportAllData();
+      if (success) {
+        Alert.alert('✅ 成功', '資料已匯出並可分享\n\n檔案名稱: emogo_exported_data.json');
+      } else {
+        Alert.alert('⚠️ 提示', '分享功能不可用，但資料已儲存到裝置');
+      }
+    } catch (error) {
+      console.error('匯出錯誤:', error);
+      Alert.alert('❌ 失敗', `資料匯出失敗:\n${error.message}`);
     }
   };
 

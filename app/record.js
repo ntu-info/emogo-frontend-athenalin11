@@ -94,36 +94,56 @@ export default function RecordScreen() {
   };
 
   const startRecording = async () => {
-    if (!cameraRef || isRecording) return;
+    if (!cameraRef || isRecording) {
+      console.log('⚠️ Camera not ready or already recording');
+      return;
+    }
     
     setIsRecording(true);
     try {
       console.log('🎥 開始錄影...');
-      const video = await cameraRef.recordAsync({
+      
+      // 使用 Promise 來控制錄影時間
+      const recordingPromise = cameraRef.recordAsync({
         maxDuration: 1, // 最多錄 1 秒
         quality: '720p',
+        mute: false,
       });
       
-      setRecordedVideo(video.uri);
-      setIsRecording(false);
-      console.log('✅ Video recorded:', video.uri);
+      // 等待錄影完成（最多 1 秒）
+      const video = await recordingPromise;
       
-      // 錄影完成後自動進入下一步
-      setTimeout(() => setStep(3), 500);
+      if (video && video.uri) {
+        setRecordedVideo(video.uri);
+        console.log('✅ Video recorded successfully:', video.uri);
+        
+        // 錄影完成後自動進入下一步
+        setTimeout(() => setStep(3), 500);
+      } else {
+        throw new Error('Video URI is null');
+      }
+      
+      setIsRecording(false);
     } catch (error) {
       console.error('❌ Error recording video:', error);
+      console.error('錯誤詳情:', error.message);
       setIsRecording(false);
       
       // 如果錄影失敗，詢問是否跳過
       Alert.alert(
         '錄影失敗',
-        '無法錄製影片。是否跳過此步驟？',
+        `無法錄製影片: ${error.message}\n\n是否跳過此步驟？`,
         [
-          { text: '重試', style: 'cancel' },
+          { 
+            text: '重試', 
+            style: 'cancel',
+            onPress: () => console.log('用戶選擇重試')
+          },
           { 
             text: '跳過', 
             onPress: () => {
-              setRecordedVideo('mock://skipped.mp4');
+              console.log('⏭️ 用戶選擇跳過錄影');
+              setRecordedVideo(`mock://skipped_${Date.now()}.mp4`);
               setStep(3);
             }
           }
@@ -276,10 +296,30 @@ export default function RecordScreen() {
 
   // 步驟 2: 錄影
   if (step === 2) {
+    // 檢查相機模組是否可用
+    if (!Camera || !useCameraPermissions) {
+      return (
+        <View style={styles.centerContainer}>
+          <Text style={styles.permissionText}>⚠️ 相機模組不可用</Text>
+          <Text style={styles.subtitle}>這可能發生在 Expo Go 環境中</Text>
+          <TouchableOpacity 
+            style={styles.nextButton} 
+            onPress={() => {
+              console.log('⏭️ 跳過相機，使用模擬影片路徑');
+              setRecordedVideo(`mock://video_${Date.now()}.mp4`);
+              setStep(3);
+            }}
+          >
+            <Text style={styles.nextButtonText}>跳過錄影，繼續 →</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
     if (!cameraPermission) {
       return (
-        <View style={styles.container}>
-          <Text>載入相機權限...</Text>
+        <View style={styles.centerContainer}>
+          <Text style={styles.permissionText}>正在載入相機權限...</Text>
         </View>
       );
     }
@@ -287,9 +327,26 @@ export default function RecordScreen() {
     if (!cameraPermission.granted) {
       return (
         <View style={styles.centerContainer}>
-          <Text style={styles.permissionText}>需要相機權限才能錄影</Text>
-          <TouchableOpacity style={styles.permissionButton} onPress={requestCameraPermission}>
-            <Text style={styles.permissionButtonText}>授予權限</Text>
+          <Text style={styles.permissionText}>📷 需要相機權限</Text>
+          <Text style={styles.subtitle}>允許 APP 使用相機來錄製 1 秒影片</Text>
+          <TouchableOpacity 
+            style={styles.permissionButton} 
+            onPress={async () => {
+              console.log('🔐 請求相機權限...');
+              const result = await requestCameraPermission();
+              console.log('權限結果:', result);
+            }}
+          >
+            <Text style={styles.permissionButtonText}>授予相機權限</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.cancelButton} 
+            onPress={() => {
+              setRecordedVideo(`mock://no_permission_${Date.now()}.mp4`);
+              setStep(3);
+            }}
+          >
+            <Text style={styles.cancelButtonText}>跳過錄影</Text>
           </TouchableOpacity>
         </View>
       );
