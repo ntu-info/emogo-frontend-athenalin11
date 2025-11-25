@@ -40,11 +40,18 @@
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
         "RECEIVE_BOOT_COMPLETED",
-        "SCHEDULE_EXACT_ALARM"
+        "SCHEDULE_EXACT_ALARM",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
       ]
     },
     "extra": {
-      "router": {}
+      "router": {},
+      "eas": {
+        "projectId": "36926c58-2d31-4866-ab0e-c44eb28c7ac7"
+      }
     },
     "owner": "athena_11",
     "ios": {
