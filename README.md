@@ -3,23 +3,33 @@
 ## 📱 應用程式資訊
 
 - **名稱**: Emogo
-- **版本**: 1.0.0
+- **版本**: 1.0.7
 - **套件名稱**: com.athena11.emogo
 
 ## 🚀 部署連結
 
-**Expo.dev APK 下載（最新版）**: https://expo.dev/artifacts/eas/jYyUUTyPXphVdrYjB62Jwa.apk
+### 📥 可用版本
+
+**v1.0.5** - ⭐ **目前推薦使用**
+- 下載：https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/7c14765d-c1cf-4a43-a597-796f5c66560e
+- ✅ 匯出功能完全正常
+- ✅ 所有功能可用
+- ⚠️ 有 deprecation 警告（不影響功能）
+
+**v1.0.7** - 🔄 **建立中**（預計還需約 30 分鐘）
+- 建立進度：https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/859b4afa-a978-40fc-8d72-94d2a7d20290
+- 使用最新 File API，無 deprecation 警告
+- 完成後將更新此連結
 
 ### 版本歷史
-- **v1.0.3** (2025-11-26 4:45 PM) - 修復資料匯出功能 ⭐ **推薦使用**
-  - **資料匯出功能已修復並可正常運作**
-  - 正確的 JSON 格式 (sentiment_records, vlog_records, gps_records)
-  - 固定檔名為 emogo_exported_data.json
-  - GPS 和相機功能完整
-  - 注意：會顯示 deprecation 警告但不影響功能
-- **v1.0.2** (2025-11-26 5:41 AM) - 修復資料匯出格式和檔案系統 API 警告
-- **v1.0.1** (2025-11-26 4:01 AM) - 修復 GPS 和相機功能
-- **v1.0.0** (2025-11-26 3:36 AM) - 初始版本
+- **v1.0.7** (2025-11-27) - 🔄 建立中 - 修正 File API 使用方式
+- **v1.0.6** (2025-11-27) - ❌ 路徑錯誤 - 不建議使用
+- **v1.0.5** (2025-11-26) - ⭐ 推薦 - 使用 Sharing API 匯出
+- **v1.0.4** (2025-11-26) - ❌ StorageAccessFramework 錯誤
+- **v1.0.3** (2025-11-26) - 有 deprecation 警告
+- **v1.0.2** (2025-11-26) - 匯出格式修正
+- **v1.0.1** (2025-11-26) - GPS 和相機修復
+- **v1.0.0** (2025-11-26) - 初始版本
 
 ## 📦 使用的套件
 

@@ -54,7 +54,14 @@ export const exportAllData = async () => {
     const documentDir = Paths.document; // 這是一個 Directory 物件
     const file = new File(documentDir, fileName);
     
-    // 寫入檔案
+    // 檢查檔案是否存在，如果存在先刪除
+    const exists = await file.exists();
+    if (exists) {
+      await file.delete();
+      console.log('🗑️ 刪除舊檔案');
+    }
+    
+    // 建立並寫入新檔案
     await file.create();
     await file.write(jsonContent);
     
