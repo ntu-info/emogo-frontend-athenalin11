@@ -45,20 +45,20 @@ export const exportAllData = async () => {
     const jsonContent = JSON.stringify(formattedData, null, 2);
     
     // 動態載入 FileSystem 新 API
-    const { File, Paths } = await import('expo-file-system');
+    const { File, Directory, Paths } = await import('expo-file-system');
     
     console.log('📄 準備匯出檔案...');
     
     // 使用新的 File API（SDK 54 推薦，無 deprecation）
     const fileName = 'emogo_exported_data.json';
-    const filePath = `${Paths.document}/${fileName}`;
-    const file = new File(filePath);
+    const documentDir = Paths.document; // 這是一個 Directory 物件
+    const file = new File(documentDir, fileName);
     
     // 寫入檔案
     await file.create();
     await file.write(jsonContent);
     
-    console.log('✅ 檔案已建立:', filePath);
+    console.log('✅ 檔案已建立:', file.uri);
 
     // 使用分享功能讓使用者選擇儲存位置
     const isAvailable = await Sharing.isAvailableAsync();
