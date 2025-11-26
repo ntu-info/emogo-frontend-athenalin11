@@ -10,21 +10,29 @@
 
 ### 📥 可用版本
 
-**v1.0.5** - ⭐ **目前推薦使用**
+**v1.0.8** - 🔄 **建立中**
+- 建立進度：等待開始...
+- ✨ 支援重複匯出（修正檔案已存在錯誤）
+- ✨ 使用最新 File API，無 deprecation 警告
+- 完成後將更新下載連結
+
+**v1.0.7** - ⭐ **目前推薦**
+- 下載：https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/859b4afa-a978-40fc-8d72-94d2a7d20290
+- ✅ 使用最新 File API
+- ✅ 無 deprecation 警告
+- ⚠️ 只能匯出一次（第二次會有檔案已存在錯誤）
+
+**v1.0.5** - 備用版本
 - 下載：https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/7c14765d-c1cf-4a43-a597-796f5c66560e
 - ✅ 匯出功能完全正常
-- ✅ 所有功能可用
+- ✅ 可重複匯出
 - ⚠️ 有 deprecation 警告（不影響功能）
 
-**v1.0.7** - 🔄 **建立中**（預計還需約 30 分鐘）
-- 建立進度：https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/859b4afa-a978-40fc-8d72-94d2a7d20290
-- 使用最新 File API，無 deprecation 警告
-- 完成後將更新此連結
-
 ### 版本歷史
-- **v1.0.7** (2025-11-27) - 🔄 建立中 - 修正 File API 使用方式
+- **v1.0.8** (2025-11-27) - 🔄 建立中 - 支援重複匯出，自動刪除舊檔
+- **v1.0.7** (2025-11-27) - ⭐ 推薦 - 使用 File API，修正路徑問題
 - **v1.0.6** (2025-11-27) - ❌ 路徑錯誤 - 不建議使用
-- **v1.0.5** (2025-11-26) - ⭐ 推薦 - 使用 Sharing API 匯出
+- **v1.0.5** (2025-11-26) - ✅ 備用 - 使用 Sharing API 匯出
 - **v1.0.4** (2025-11-26) - ❌ StorageAccessFramework 錯誤
 - **v1.0.3** (2025-11-26) - 有 deprecation 警告
 - **v1.0.2** (2025-11-26) - 匯出格式修正
