@@ -1,9 +1,8 @@
-import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { Alert, Platform } from 'react-native';
+import { Alert } from 'react-native';
 import { getAllSentimentRecords, getAllVlogRecords, getAllGpsRecords } from './database';
 
-// 匯出所有資料為 JSON 檔案
+// 匯出所有資料為 JSON 檔案 - 使用 FileSystem 新 API（無 deprecation）
 export const exportAllData = async () => {
   try {
     console.log('📤 開始匯出資料...');
@@ -44,26 +43,33 @@ export const exportAllData = async () => {
     };
 
     const jsonContent = JSON.stringify(formattedData, null, 2);
+    
+    // 動態載入 FileSystem 新 API
+    const { File, Paths } = await import('expo-file-system');
+    
+    console.log('📄 準備匯出檔案...');
+    
+    // 使用新的 File API（SDK 54 推薦，無 deprecation）
     const fileName = 'emogo_exported_data.json';
-    const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+    const filePath = `${Paths.document}/${fileName}`;
+    const file = new File(filePath);
+    
+    // 寫入檔案
+    await file.create();
+    await file.write(jsonContent);
+    
+    console.log('✅ 檔案已建立:', filePath);
 
-    console.log('📄 準備匯出檔案:', fileName);
-    console.log('📁 暫存位置:', fileUri);
-
-    // 寫入檔案到 app 的 document directory
-    await FileSystem.writeAsStringAsync(fileUri, jsonContent);
-    console.log('✅ 檔案已寫入暫存區');
-
-    // 使用分享功能讓使用者選擇儲存位置（這樣不會有 deprecation 警告）
+    // 使用分享功能讓使用者選擇儲存位置
     const isAvailable = await Sharing.isAvailableAsync();
     if (isAvailable) {
-      await Sharing.shareAsync(fileUri, {
+      await Sharing.shareAsync(file.uri, {
         mimeType: 'application/json',
         dialogTitle: '儲存資料檔案',
         UTI: 'public.json'
       });
       console.log('✅ 分享對話框已開啟');
-      Alert.alert('✅ 成功', `資料已準備完成！\n請選擇儲存位置`);
+      Alert.alert('✅ 成功', `資料已準備完成！\n檔案：${fileName}\n\n請選擇儲存位置`);
       return true;
     } else {
       Alert.alert('❌ 錯誤', '此裝置不支援檔案分享功能');
