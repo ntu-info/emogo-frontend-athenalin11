@@ -1,6 +1,6 @@
-import * as FileSystem from 'expo-file-system';
+import { StorageAccessFramework } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import { getAllSentimentRecords, getAllVlogRecords, getAllGpsRecords } from './database';
 
 // 匯出所有資料為 JSON 檔案
@@ -43,89 +43,56 @@ export const exportAllData = async () => {
       }))
     };
 
-    const fileName = `emogo_exported_data.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
+    const jsonContent = JSON.stringify(formattedData, null, 2);
+    const fileName = 'emogo_exported_data.json';
 
-    // 使用標準的 writeAsStringAsync（會有 deprecation 警告，但能正常運作）
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(formattedData, null, 2));
-    
-    console.log('✅ 檔案已寫入:', fileUri);
-    console.log('📄 檔案內容預覽:', JSON.stringify(formattedData, null, 2).substring(0, 500));
+    console.log('📄 準備匯出檔案:', fileName);
 
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(fileUri, {
-        mimeType: 'application/json',
-        dialogTitle: '匯出 Emogo 資料',
-        UTI: 'public.json'
-      });
-      console.log('✅ Data exported and shared successfully');
+    if (Platform.OS === 'android') {
+      // Android: 使用 SAF (Storage Access Framework) - 新 API，無 deprecation 警告
+      const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+      
+      if (!permissions.granted) {
+        Alert.alert('需要權限', '請授予儲存權限以匯出資料');
+        return false;
+      }
+
+      const fileUri = await StorageAccessFramework.createFileAsync(
+        permissions.directoryUri,
+        fileName,
+        'application/json'
+      );
+
+      await StorageAccessFramework.writeAsStringAsync(fileUri, jsonContent);
+      
+      console.log('✅ 檔案已寫入:', fileUri);
+      Alert.alert('✅ 成功', `資料已匯出:\n${fileName}\n\n請在您選擇的資料夾中查看檔案`);
       return true;
     } else {
-      console.log('⚠️ Sharing not available on this device');
-      Alert.alert('提示', `資料已儲存到:\n${fileUri}\n\n請手動從裝置複製此檔案`);
+      // iOS or other platforms
+      Alert.alert('提示', '目前僅支援 Android 平台');
       return false;
     }
   } catch (error) {
     console.error('❌ Error exporting data:', error);
     console.error('錯誤詳情:', error.message, error.stack);
-    throw error;
+    Alert.alert('❌ 匯出失敗', `錯誤: ${error.message}`);
+    return false;
   }
 };
 
-// 匯出個別資料類型
+// 匯出個別資料類型（簡化版）
 export const exportSentimentData = async () => {
-  try {
-    const records = getAllSentimentRecords();
-    const fileName = `sentiment_data_${Date.now()}.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
-
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
-
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(fileUri);
-      return true;
-    }
-    return false;
-  } catch (error) {
-    console.error('❌ Error exporting sentiment data:', error);
-    return false;
-  }
+  console.log('使用主要匯出功能');
+  return await exportAllData();
 };
 
 export const exportVlogData = async () => {
-  try {
-    const records = getAllVlogRecords();
-    const fileName = `vlog_data_${Date.now()}.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
-
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
-
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(fileUri);
-      return true;
-    }
-    return false;
-  } catch (error) {
-    console.error('❌ Error exporting vlog data:', error);
-    return false;
-  }
+  console.log('使用主要匯出功能');
+  return await exportAllData();
 };
 
 export const exportGpsData = async () => {
-  try {
-    const records = getAllGpsRecords();
-    const fileName = `gps_data_${Date.now()}.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
-
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
-
-    if (await Sharing.isAvailableAsync()) {
-      await Sharing.shareAsync(fileUri);
-      return true;
-    }
-    return false;
-  } catch (error) {
-    console.error('❌ Error exporting GPS data:', error);
-    return false;
-  }
+  console.log('使用主要匯出功能');
+  return await exportAllData();
 };
