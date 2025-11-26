@@ -1,4 +1,4 @@
-import { StorageAccessFramework } from 'expo-file-system';
+import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Alert, Platform } from 'react-native';
 import { getAllSentimentRecords, getAllVlogRecords, getAllGpsRecords } from './database';
@@ -45,32 +45,28 @@ export const exportAllData = async () => {
 
     const jsonContent = JSON.stringify(formattedData, null, 2);
     const fileName = 'emogo_exported_data.json';
+    const fileUri = `${FileSystem.documentDirectory}${fileName}`;
 
     console.log('📄 準備匯出檔案:', fileName);
+    console.log('📁 暫存位置:', fileUri);
 
-    if (Platform.OS === 'android') {
-      // Android: 使用 SAF (Storage Access Framework) - 新 API，無 deprecation 警告
-      const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
-      
-      if (!permissions.granted) {
-        Alert.alert('需要權限', '請授予儲存權限以匯出資料');
-        return false;
-      }
+    // 寫入檔案到 app 的 document directory
+    await FileSystem.writeAsStringAsync(fileUri, jsonContent);
+    console.log('✅ 檔案已寫入暫存區');
 
-      const fileUri = await StorageAccessFramework.createFileAsync(
-        permissions.directoryUri,
-        fileName,
-        'application/json'
-      );
-
-      await StorageAccessFramework.writeAsStringAsync(fileUri, jsonContent);
-      
-      console.log('✅ 檔案已寫入:', fileUri);
-      Alert.alert('✅ 成功', `資料已匯出:\n${fileName}\n\n請在您選擇的資料夾中查看檔案`);
+    // 使用分享功能讓使用者選擇儲存位置（這樣不會有 deprecation 警告）
+    const isAvailable = await Sharing.isAvailableAsync();
+    if (isAvailable) {
+      await Sharing.shareAsync(fileUri, {
+        mimeType: 'application/json',
+        dialogTitle: '儲存資料檔案',
+        UTI: 'public.json'
+      });
+      console.log('✅ 分享對話框已開啟');
+      Alert.alert('✅ 成功', `資料已準備完成！\n請選擇儲存位置`);
       return true;
     } else {
-      // iOS or other platforms
-      Alert.alert('提示', '目前僅支援 Android 平台');
+      Alert.alert('❌ 錯誤', '此裝置不支援檔案分享功能');
       return false;
     }
   } catch (error) {
