@@ -3,7 +3,6 @@ import { useRouter } from "expo-router";
 import { useState, useEffect } from "react";
 import * as Location from "expo-location";
 import { insertSentimentRecord, insertVlogRecord, insertGpsRecord } from "../utils/database";
-import * as FileSystem from "expo-file-system";
 
 // 延遲導入 Camera 以避免初始化錯誤
 let Camera = null;

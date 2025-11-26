@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system/legacy';
+import { writeAsStringAsync, documentDirectory } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { Alert } from 'react-native';
 import { getAllSentimentRecords, getAllVlogRecords, getAllGpsRecords } from './database';
@@ -44,9 +44,9 @@ export const exportAllData = async () => {
     };
 
     const fileName = `emogo_exported_data.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
+    const fileUri = documentDirectory + fileName;
 
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(formattedData, null, 2));
+    await writeAsStringAsync(fileUri, JSON.stringify(formattedData, null, 2));
     
     console.log('✅ 檔案已寫入:', fileUri);
     console.log('📄 檔案內容預覽:', JSON.stringify(formattedData, null, 2).substring(0, 500));
@@ -76,9 +76,9 @@ export const exportSentimentData = async () => {
   try {
     const records = getAllSentimentRecords();
     const fileName = `sentiment_data_${Date.now()}.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
+    const fileUri = documentDirectory + fileName;
 
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
+    await writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
 
     if (await Sharing.isAvailableAsync()) {
       await Sharing.shareAsync(fileUri);
@@ -95,9 +95,9 @@ export const exportVlogData = async () => {
   try {
     const records = getAllVlogRecords();
     const fileName = `vlog_data_${Date.now()}.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
+    const fileUri = documentDirectory + fileName;
 
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
+    await writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
 
     if (await Sharing.isAvailableAsync()) {
       await Sharing.shareAsync(fileUri);
@@ -114,9 +114,9 @@ export const exportGpsData = async () => {
   try {
     const records = getAllGpsRecords();
     const fileName = `gps_data_${Date.now()}.json`;
-    const fileUri = FileSystem.documentDirectory + fileName;
+    const fileUri = documentDirectory + fileName;
 
-    await FileSystem.writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
+    await writeAsStringAsync(fileUri, JSON.stringify(records, null, 2));
 
     if (await Sharing.isAvailableAsync()) {
       await Sharing.shareAsync(fileUri);
