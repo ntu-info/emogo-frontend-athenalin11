@@ -8,18 +8,17 @@
 
 ## 🚀 部署連結
 
-**Expo.dev APK 下載（最新版）**: https://expo.dev/artifacts/eas/cZ3cvTXXJn4PGTTxvtLXWM.apk
+**Expo.dev APK 下載（最新版）**: https://expo.dev/artifacts/eas/jYyUUTyPXphVdrYjB62Jwa.apk
 
 ### 版本歷史
-- **v1.0.2** (2025-11-26 5:41 AM) - 修復資料匯出格式和檔案系統 API 警告 ⭐ **推薦使用**
+- **v1.0.3** (2025-11-26 4:45 PM) - 修復資料匯出功能 ⭐ **推薦使用**
+  - **資料匯出功能已修復並可正常運作**
   - 正確的 JSON 格式 (sentiment_records, vlog_records, gps_records)
-  - 修復 expo-file-system deprecation 警告
   - 固定檔名為 emogo_exported_data.json
-  - 改善相機權限流程和錯誤提示
+  - GPS 和相機功能完整
+  - 注意：會顯示 deprecation 警告但不影響功能
+- **v1.0.2** (2025-11-26 5:41 AM) - 修復資料匯出格式和檔案系統 API 警告
 - **v1.0.1** (2025-11-26 4:01 AM) - 修復 GPS 和相機功能
-  - 改善 GPS 定位精確度與容錯機制
-  - 修正相機錄影參數
-  - 新增重新取得位置功能
 - **v1.0.0** (2025-11-26 3:36 AM) - 初始版本
 
 ## 📦 使用的套件
