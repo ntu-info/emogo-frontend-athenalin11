@@ -1,0 +1,42 @@
+[
+  {
+    "id": 5,
+    "timestamp": "2025-11-26T07:16:01.541Z",
+    "valence": 5,
+    "arousal": 5,
+    "dominance": 5,
+    "notes": ""
+  },
+  {
+    "id": 4,
+    "timestamp": "2025-11-26T05:53:05.798Z",
+    "valence": 2,
+    "arousal": 5,
+    "dominance": 5,
+    "notes": "突然想起下午其實有課遲到了"
+  },
+  {
+    "id": 3,
+    "timestamp": "2025-11-26T04:58:13.587Z",
+    "valence": 6,
+    "arousal": 2,
+    "dominance": 6,
+    "notes": ""
+  },
+  {
+    "id": 2,
+    "timestamp": "2025-11-25T20:58:26.071Z",
+    "valence": 2,
+    "arousal": 1,
+    "dominance": 2,
+    "notes": "想睡覺"
+  },
+  {
+    "id": 1,
+    "timestamp": "2025-11-25T20:14:23.277Z",
+    "valence": 1,
+    "arousal": 1,
+    "dominance": 1,
+    "notes": ""
+  }
+]
