@@ -2,23 +2,23 @@
 
 情感體驗採樣應用程式，透過結構化問卷、影片記錄和 GPS 定位，收集使用者的情感狀態資料。
 
-## 📱 應用程式資訊
+## 應用程式資訊
 
-- **版本**: 1.0.7
-- **平台**: Android
-- **開發框架**: Expo / React Native
+- 版本: 1.0.7
+- 平台: Android
+- 開發框架: Expo / React Native
 
-## 🚀 APK 下載連結
+## APK 下載連結
 
-**v1.0.7** - 正式版本  
+v1.0.7 - 正式版本  
 https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/859b4afa-a978-40fc-8d72-94d2a7d20290
 
-## ✨ 主要功能
+## 主要功能
 
 ### 1. 情感評估問卷（PAD 模型）
-- **Pleasure (愉悅度)**: 1-9 分量表
-- **Arousal (激動度)**: 1-9 分量表  
-- **Dominance (主導度)**: 1-9 分量表
+- Pleasure (愉悅度): 1-9 分量表
+- Arousal (激動度): 1-9 分量表  
+- Dominance (主導度): 1-9 分量表
 - 支援文字備註記錄當下想法
 
 ### 2. 1 秒影片錄製
@@ -45,7 +45,7 @@ https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11/builds/8
 - 透過系統分享功能選擇儲存位置
 - 包含所有情感、影片、GPS 記錄
 
-## 📂 專案結構
+## 專案結構
 
 ```
 app/
@@ -67,7 +67,7 @@ data/
 └── emogo_exported_data.json
 ```
 
-## 🧪 測試方法
+## 測試方法
 
 ### 安裝測試
 1. 下載上方 APK 連結的檔案
@@ -112,7 +112,7 @@ data/
 - `gps_records`: GPS 座標資料
 - 每筆記錄的時間戳應該一致（同一次記錄）
 
-## 📦 使用技術
+## 使用技術
 
 | 套件 | 用途 |
 |------|------|
@@ -123,11 +123,11 @@ data/
 | expo-sharing | 資料分享匯出 |
 | expo-location | GPS 定位 |
 
-## 📊 收集資料
+## 收集資料
 
-專案已收集 **5 筆實際資料**，時間跨度約 **19 小時**，資料檔案位於 `data/` 資料夾。
+專案已收集 5 筆實際資料，時間跨度約 19 小時，資料檔案位於 data/ 資料夾。
 
-## 🔗 相關連結
+## 相關連結
 
-- **GitHub Repository**: https://github.com/ntu-info/emogo-frontend-athenalin11
-- **Expo Project**: https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11
+- GitHub Repository: https://github.com/ntu-info/emogo-frontend-athenalin11
+- Expo Project: https://expo.dev/accounts/athena_11/projects/emogo-frontend-athenalin11
